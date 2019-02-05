@@ -635,8 +635,11 @@ class PythonInterface:
     Xplane plugin
     '''
     def XPluginStart(self):
-        self.syspath = []
-        self.conf = Conf(XPLMGetSystemPath(self.syspath)[:-1])
+        self.syspath = ""
+        self.syspath = XPLMGetSystemPath(self.syspath)[:-1]
+        self.syspath = os.sep.join([self.syspath, 'Resources', 'plugins', 'PythonScripts', 'noaweather'])
+
+        self.conf = Conf(self.syspath)
 
         self.Name = "noaWeather - " + self.conf.__VERSION__
         self.Sig = "noaWeather.joanpc.PI"
@@ -1357,7 +1360,6 @@ class PythonInterface:
         for logfile in logfiles:
             filepath = os.sep.join([self.conf.syspath, 'Resources', 'plugins', 'PythonScripts', logfile])
             if os.path.exists(filepath):
-
                 lfsize = os.path.getsize(filepath)
                 lf = open(filepath, 'r')
                 lf.seek(c.limit(1024 * 6, lfsize) * -1 , 2)

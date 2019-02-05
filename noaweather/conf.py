@@ -25,11 +25,10 @@ class Conf:
     def __init__(self, syspath):
         # Inits conf
         self.syspath      = syspath
-        self.respath      = os.sep.join([self.syspath, 'Resources', 'plugins', 'PythonScripts', 'noaweather'])
-        self.settingsfile = os.sep.join([self.respath, 'settings.pkl'])
-        self.serverSettingsFile = os.sep.join([self.respath, 'weatherServer.pkl'])
+        self.settingsfile = os.sep.join([self.syspath, 'settings.pkl'])
+        self.serverSettingsFile = os.sep.join([self.syspath, 'weatherServer.pkl'])
 
-        self.cachepath    = os.sep.join([self.respath, 'cache'])
+        self.cachepath    = os.sep.join([self.syspath, 'cache'])
         if not os.path.exists(self.cachepath):
             os.makedirs(self.cachepath)
 
@@ -78,7 +77,7 @@ class Conf:
             if os.path.exists(self.pythonpath + '2.7'):
                 self.pythonpath = self.pythonpath + '2.7'
 
-        self.wgrib2bin  = os.sep.join([self.respath, 'bin', wgbin])
+        self.wgrib2bin  = os.sep.join([self.syspath, 'bin', wgbin])
 
         # Enforce execution rights
         try:

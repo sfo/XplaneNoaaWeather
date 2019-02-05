@@ -143,25 +143,15 @@ class clientHandler(SocketServer.BaseRequestHandler):
 
         print '%s:%s: %d bytes sent.' % (self.client_address[0], data, nbytes)
 
-if __name__ == "__main__":
-    # Get the X-Plane path from the arguments
-    if len(sys.argv) > 1:
-        path = sys.argv[1]
-    else:
-        # Joanpc's personal debuggin options
-        if sys.platform == 'win32':
-            path = 'H:'
-        else:
-            path = '/Volumes/TO_GO/X-Plane 10'
 
+if __name__ == "__main__":
+    path = os.path.dirname(os.path.realpath(__file__))
     conf = Conf(path)
 
-    #logfile = open(os.sep.join([conf.respath, 'weatherServerLog.txt']), 'a')
+    logfile = logFile(os.sep.join([conf.syspath, 'weatherServerLog.txt']), 'a')
 
-    logfile = logFile(os.sep.join([conf.respath, 'weatherServerLog.txt']), 'a')
-
-    sys.stderr = logfile
-    sys.stdout = logfile
+    # sys.stderr = logfile
+    # sys.stdout = logfile
 
     print '---------------'
     print 'Starting server'
