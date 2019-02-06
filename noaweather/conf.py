@@ -20,7 +20,7 @@ class Conf:
     syspath, dirsep = '', os.sep
     printableChars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~ '
 
-    __VERSION__ = '2.4.3'
+    __VERSION__ = '3.0.0'
 
     def __init__(self, syspath):
         # Inits conf
@@ -116,6 +116,7 @@ class Conf:
 
         # Weather server configuration
         self.server_updaterate = 10 # Run the weather loop each #seconds
+        self.server_bind_address = '127.0.0.1'
         self.server_address = '127.0.0.1'
         self.server_port    = 8950
 
@@ -217,6 +218,10 @@ class Conf:
                        'lastwafsgrib': self.lastwafsgrib,
                        'ms_update' : self.ms_update,
                        'weatherServerPid': self.weatherServerPid,
+                       'server_updaterate': self.server_updaterate,
+                       'server_bind_address': self.server_bind_address,
+                       'server_address': self.server_address,
+                       'server_port': self.server_port,
                        }
         self.saveSettings(self.serverSettingsFile, server_conf)
 

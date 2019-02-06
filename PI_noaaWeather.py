@@ -163,7 +163,7 @@ class Weather:
 
     def weatherClientSend(self, msg):
         if self.weatherClientThread:
-            self.sock.sendto(msg,('127.0.0.1', self.conf.server_port))
+            self.sock.sendto(msg,(self.conf.server_address, self.conf.server_port))
 
     def startWeatherServer(self):
         DETACHED_PROCESS = 0x00000008

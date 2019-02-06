@@ -150,8 +150,8 @@ if __name__ == "__main__":
 
     logfile = logFile(os.sep.join([conf.syspath, 'weatherServerLog.txt']), 'a')
 
-    # sys.stderr = logfile
-    # sys.stdout = logfile
+    sys.stderr = logfile
+    sys.stdout = logfile
 
     print '---------------'
     print 'Starting server'
@@ -159,16 +159,21 @@ if __name__ == "__main__":
     print sys.argv
 
     try:
-        server = SocketServer.UDPServer(("localhost", conf.server_port), clientHandler)
+        server = SocketServer.UDPServer((conf.server_bind_address, conf.server_port), clientHandler)
     except socket.error:
-        print "Can't bind address: %s, port: %d." % ("localhost", conf.server_port)
+        print "Can't bind address: %s, port: %d." % (conf.server_bind_address, conf.server_port)
 
         if conf.weatherServerPid is not False:
             print 'Killing old server with pid %d' % conf.weatherServerPid
             os.kill(conf.weatherServerPid, signal.SIGTERM)
             time.sleep(2)
             conf.serverLoad()
-            server = SocketServer.UDPServer(("localhost", conf.server_port), clientHandler)
+            try:
+                server = SocketServer.UDPServer((conf.server_bind_address, conf.server_port), clientHandler)
+            except socket.error:
+                print "Can't bind address: %s, port: %d." % (conf.server_bind_address, conf.server_port)
+                logfile.close()
+                exit(1)
 
     # Save pid
     conf.weatherServerPid = os.getpid()
@@ -177,7 +182,7 @@ if __name__ == "__main__":
     gfs = GFS(conf)
     gfs.start()
 
-    print 'Server started.'
+    print 'Server listening on %s:%d.' % (conf.server_bind_address, conf.server_port)
 
     # Server loop
     try:
