@@ -134,7 +134,8 @@ class Weather:
 
         self.newData = False
 
-        self.startWeatherServer()
+        if self.conf.server_start:
+            self.startWeatherServer()
 
     def startWeatherClient(self):
         if not self.weatherClientThread:
@@ -167,7 +168,7 @@ class Weather:
 
     def startWeatherServer(self):
         DETACHED_PROCESS = 0x00000008
-        args = [self.conf.pythonpath, os.sep.join([self.conf.respath, 'weatherServer.py']), self.conf.syspath]
+        args = [self.conf.pythonpath, os.sep.join([self.conf.syspath, 'weatherServer.py']), self.conf.syspath]
 
         if self.conf.spinfo:
             p = subprocess.Popen(args, startupinfo=self.conf.spinfo, close_fds=True, creationflags=DETACHED_PROCESS)

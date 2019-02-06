@@ -435,7 +435,7 @@ class Metar:
         cursor = db.cursor()
 
         try:
-            f = open(os.sep.join([self.conf.syspath, 'METAR.rwx']), 'w')
+            f = open(os.sep.join([self.conf.datapath, 'METAR.rwx']), 'w')
         except:
             print "ERROR updating METAR.rwx file: %s %s" % (sys.exc_info()[0], sys.exc_info()[1])
             return False

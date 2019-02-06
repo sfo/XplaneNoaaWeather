@@ -150,8 +150,8 @@ if __name__ == "__main__":
 
     logfile = logFile(os.sep.join([conf.syspath, 'weatherServerLog.txt']), 'a')
 
-    sys.stderr = logfile
-    sys.stdout = logfile
+    # sys.stderr = logfile
+    # sys.stdout = logfile
 
     print '---------------'
     print 'Starting server'
@@ -182,7 +182,7 @@ if __name__ == "__main__":
     gfs = GFS(conf)
     gfs.start()
 
-    print 'Server listening on %s:%d.' % (conf.server_bind_address, conf.server_port)
+    print "Server listening on %s:%d." % (conf.server_bind_address, conf.server_port)
 
     # Server loop
     try:

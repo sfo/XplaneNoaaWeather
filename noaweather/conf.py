@@ -9,7 +9,7 @@ of the License, or any later version.
 '''
 
 import os
-import cPickle
+import json
 import sys
 import subprocess
 
@@ -25,10 +25,12 @@ class Conf:
     def __init__(self, syspath):
         # Inits conf
         self.syspath      = syspath
-        self.settingsfile = os.sep.join([self.syspath, 'settings.pkl'])
-        self.serverSettingsFile = os.sep.join([self.syspath, 'weatherServer.pkl'])
+        self.binpath      = os.sep.join([self.syspath, 'bin'])
+        self.datapath     = os.sep.join([self.syspath, 'data'])
 
-        self.cachepath    = os.sep.join([self.syspath, 'cache'])
+        self.settingsfile = os.sep.join([self.datapath, 'settings.json'])
+        self.serverSettingsFile = os.sep.join([self.datapath, 'weatherServer.json'])
+        self.cachepath    = os.sep.join([self.datapath, 'cache'])
         if not os.path.exists(self.cachepath):
             os.makedirs(self.cachepath)
 
@@ -77,7 +79,7 @@ class Conf:
             if os.path.exists(self.pythonpath + '2.7'):
                 self.pythonpath = self.pythonpath + '2.7'
 
-        self.wgrib2bin  = os.sep.join([self.syspath, 'bin', wgbin])
+        self.wgrib2bin  = os.sep.join([self.binpath, wgbin])
 
         # Enforce execution rights
         try:
@@ -115,6 +117,7 @@ class Conf:
         self.max_cloud_height = False # in feet
 
         # Weather server configuration
+        self.server_start = False # Run the weather loop each #seconds
         self.server_updaterate = 10 # Run the weather loop each #seconds
         self.server_bind_address = '127.0.0.1'
         self.server_address = '127.0.0.1'
@@ -143,15 +146,16 @@ class Conf:
         self.updateMetarRWX = True
 
     def saveSettings(self, filepath, settings):
+        print "Saving settings"
         f = open(filepath, 'w')
-        cPickle.dump(settings, f)
+        f.write(json.dumps(settings, indent=True))
         f.close()
 
     def loadSettings(self, filepath):
         if os.path.exists(filepath):
             f = open(filepath, 'r')
             try:
-                conf = cPickle.load(f)
+                conf = json.load(f)
                 f.close()
             except:
                 # Corrupted settings, remove file
@@ -198,7 +202,10 @@ class Conf:
                 'metar_updaterate': self.metar_updaterate,
                 'tracker_uid': self.tracker_uid,
                 'tracker_enabled': self.tracker_enabled,
-                'ignore_metar_stations': self.ignore_metar_stations
+                'ignore_metar_stations': self.ignore_metar_stations,
+                'server_address': self.server_address,
+                'server_port': self.server_port,
+                'server_start': self.server_start,
                 }
         self.saveSettings(self.settingsfile, conf)
 
@@ -220,7 +227,6 @@ class Conf:
                        'weatherServerPid': self.weatherServerPid,
                        'server_updaterate': self.server_updaterate,
                        'server_bind_address': self.server_bind_address,
-                       'server_address': self.server_address,
                        'server_port': self.server_port,
                        }
         self.saveSettings(self.serverSettingsFile, server_conf)

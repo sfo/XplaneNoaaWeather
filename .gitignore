@@ -5,3 +5,4 @@ Pipfile*
 cache/
 *.pkl
 *.txt
+data/
