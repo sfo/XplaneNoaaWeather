@@ -177,7 +177,8 @@ class Weather:
 
     def shutdown(self):
         # Shutdown client and server
-        self.weatherClientSend('!shutdown')
+        if self.conf.server_start:
+            self.weatherClientSend('!shutdown')
         self.weatherClientThread = False
 
 
@@ -1527,6 +1528,7 @@ class PythonInterface:
 
     def XPluginReceiveMessage(self, inFromWho, inMessage, inParam):
         if inParam == XPLM_PLUGIN_XPLANE and inMessage == XPLM_MSG_AIRPORT_LOADED:
+            #FIXME load weather also in case plugin reload is triggered
             self.weather.startWeatherClient()
             self.newAptLoaded = True
         elif inMessage == (0x8000000 | 8090)  and inParam == 1:
