@@ -27,7 +27,7 @@ class GFS(threading.Thread):
     NOAA GFS download and parse functions.
     '''
     cycles = [0, 6, 12, 18]
-    baseurl = 'http://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?'
+    baseurl = 'https://nomads.ncep.noaa.gov/cgi-bin/filter_gfs_0p50.pl?'
 
     params = [
               'leftlon=0',
